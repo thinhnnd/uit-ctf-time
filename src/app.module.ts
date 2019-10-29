@@ -4,7 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { CONSTANTS } from './config';
 import { HttpErrorFilter } from './shared/http-error.filter';
 import { LoggingInterceptor } from './shared/logging.interceptor';
-import { APIModule } from './api/api.module';
+import { CTFEventsModule } from './ctf-events/events.module';
 import { CatsModule } from './cats/cats.module';
 import { UsersModule } from './users/users.module';
 @Module({
@@ -13,7 +13,7 @@ import { UsersModule } from './users/users.module';
 			useNewUrlParser: true,
 			useUnifiedTopology: true
 		}),
-		APIModule, CatsModule, UsersModule],
+		CTFEventsModule, CatsModule, UsersModule],
 	providers: [{
 		provide: APP_FILTER,
 		useClass: HttpErrorFilter

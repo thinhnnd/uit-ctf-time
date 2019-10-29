@@ -1,8 +1,6 @@
 import * as mongoose from 'mongoose';
-import { SchemaTypes } from 'mongoose';
-
 export const CTFEventSchema = new mongoose.Schema({
-    "id": SchemaTypes.ObjectId,
+    "id": Number,
     "organizers": Array,
     "onsite": Boolean,
     "finish": Date,

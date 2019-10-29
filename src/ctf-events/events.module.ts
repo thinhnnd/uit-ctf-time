@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { ApiService } from './api.service';
-import { ApiController } from './api.controller';
+import { CTFEventsService } from './events.service';
+import { CTFEventsController } from './events.controller';
 import { CTFEventSchema } from './schemas/ctf-event.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 @Module({
     imports: [MongooseModule.forFeature([{ name: 'CTF_Event', schema: CTFEventSchema }]),],
-    providers: [ApiService],
-    controllers: [ApiController]
+    providers: [CTFEventsService],
+    controllers: [CTFEventsController]
 })
-export class APIModule { }
+export class CTFEventsModule { }

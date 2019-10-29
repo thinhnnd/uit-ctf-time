@@ -7,6 +7,7 @@ import { HttpErrorFilter } from './shared/http-error.filter';
 import { LoggingInterceptor } from './shared/logging.interceptor';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CatsModule } from './cats/cats.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { CatsModule } from './cats/cats.module';
          useNewUrlParser: true,
          useUnifiedTopology: true
       }), 
-      CatsModule
+      CatsModule, UsersModule
   ],
   controllers: [AppController],
   providers: [

@@ -6,13 +6,21 @@ import { AppService } from './app.service';
 import { HttpErrorFilter } from './shared/http-error.filter';
 import { LoggingInterceptor } from './shared/logging.interceptor';
 import { MongooseModule } from '@nestjs/mongoose';
+import { CatsModule } from './cats/cats.module';
 
 @Module({
-  imports: [MongooseModule.forRoot('mongodb://localhost/uit-ctf-time')],
+  imports: [
+    MongooseModule.forRoot(
+      'mongodb://localhost/uit-ctf-time', 
+      {
+         useNewUrlParser: true,
+         useUnifiedTopology: true
+      }), 
+      CatsModule
+  ],
   controllers: [AppController],
   providers: [
     AppService,
-    AppService, 
     {
       provide: APP_FILTER,
       useClass: HttpErrorFilter

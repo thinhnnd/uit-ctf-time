@@ -8,6 +8,7 @@ import { LoggingInterceptor } from './shared/logging.interceptor';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CatsModule } from './cats/cats.module';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -17,7 +18,9 @@ import { UsersModule } from './users/users.module';
          useNewUrlParser: true,
          useUnifiedTopology: true
       }), 
-      CatsModule, UsersModule
+      CatsModule, 
+      UsersModule, 
+      AuthModule
   ],
   controllers: [AppController],
   providers: [
@@ -29,7 +32,7 @@ import { UsersModule } from './users/users.module';
     {
       provide: APP_INTERCEPTOR,
       useClass: LoggingInterceptor
-    }
+    },
   ],
 })
 export class AppModule {}

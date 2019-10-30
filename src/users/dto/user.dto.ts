@@ -1,7 +1,26 @@
+import { IsString, IsEmail, IsDate, IsNotEmpty } from "class-validator";
+
 export class UserDto {
+    @IsEmail()
+    @IsNotEmpty()
     readonly email: string;
+
+    @IsString()
     readonly full_name: string;
-    readonly username: string;
+
+    @IsString()
+    @IsNotEmpty()
     readonly password: string;
+
     readonly date_of_birth: Date; 
+}
+
+export class LoginDto {
+    @IsEmail()
+    @IsNotEmpty()
+    readonly email: string;
+
+    @IsString()
+    @IsNotEmpty()
+    readonly password: string;
 }

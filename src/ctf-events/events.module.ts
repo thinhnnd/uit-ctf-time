@@ -6,6 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 @Module({
     imports: [MongooseModule.forFeature([{ name: 'CTF_Event', schema: CTFEventSchema }]),],
     providers: [CTFEventsService],
-    controllers: [CTFEventsController]
+    controllers: [CTFEventsController],
+    exports:[CTFEventsService]
 })
 export class CTFEventsModule { }

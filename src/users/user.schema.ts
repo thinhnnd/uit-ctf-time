@@ -6,7 +6,7 @@ export const UserSchema = new mongoose.Schema({
     email: { type: String, required: true, lowercase: true, trim: true},
     full_name: String,
     password: String,
-    team_id: Schema.Types.ObjectId,
+    teams:  [{type: Schema.Types.ObjectId, ref: 'Team'}],
     date_of_birth: Date,
     role: { type: String, default: 'user' },
     // created_at: { type: Date, default: Date.now, immutable: false },

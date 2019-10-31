@@ -31,13 +31,11 @@ export class UsersService {
     }
 
     async getUserById(userId: String) : Promise<IUser> {
-        try {
-            const user = await this.userModel.findById(userId);
-            return this.sanitizeUser(user);
+        const user = await this.userModel.findById(userId).populate('teams', '-updatedAt -members');
+        if(!user) {
+            throw new HttpException('User not found', HttpStatus.NOT_FOUND);
         }
-        catch (error) {
-            throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return this.sanitizeUser(user); 
     }
 
     async destroyUser(userId: String) {
@@ -45,13 +43,11 @@ export class UsersService {
     }
 
     async findOneByEmail(userEmail: String) {
-        try {
-            const user = await this.userModel.findOne({email: userEmail});
-            return user;
+        const user = await this.userModel.findOne({email: userEmail}).populate('teams', '-updatedAt -members');
+        if(!user) {
+            throw new HttpException('User not found', HttpStatus.NOT_FOUND);
         }
-        catch (err) {
-            throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
-        }
+        return user;
     }
 
     async findByLoginInput(userLogin: LoginDto) {

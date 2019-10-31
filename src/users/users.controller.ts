@@ -23,9 +23,8 @@ export class UsersController {
     }
 
     @Get()
-    @UseGuards(AuthGuard('jwt'))
     @UsePipes(new ValidationPipe())
-    async readAll(@User('userId') userId){
+    async readAll(){
         return await this.userService.getAllUsers();
     }
 

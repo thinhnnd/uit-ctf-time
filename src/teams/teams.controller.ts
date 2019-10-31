@@ -39,10 +39,16 @@ export class TeamsController {
         return await this.teamsService.addMember(userId, userToAddId, teamId);
     }
 
-    @Put(':id/add-member')
+    @Put(':id/remove-member')
     @UseGuards(AuthGuard('jwt'))
-    async addMemberByEmail(@User('userId') userId, @Param('id') teamId: string ,@Body() userToAddEmail: string) {
-        return await this.teamsService.addMemberByEmail(userId, teamId, userToAddEmail);
+    async removeMember(@User('userId') userId, @Param('id') teamId: string ,@Body('userToRemoveId') userToRemoveId: string) {
+        return await this.teamsService.addMember(userId, userToRemoveId, teamId);
+    }
+
+    @Put(':id/add-member-by-email')
+    @UseGuards(AuthGuard('jwt'))
+    async addMemberByEmail(@User('userId') userId, @Param('id') teamId: string ,@Body('userToAddEmail') userToAddEmail: string) {
+        return await this.teamsService.addMemberByEmail(userId, userToAddEmail, teamId);
     }
 
     @Delete()

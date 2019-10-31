@@ -5,7 +5,7 @@ import { Schema } from 'mongoose';
 export const TeamSchema = new mongoose.Schema({
     teamName: String,
     leader: Schema.Types.ObjectId,
-    teamMembers: [Schema.Types.ObjectId],
-    eventsRegistration: [Schema.Types.ObjectId],
-    teamEventStatusId: [Schema.Types.ObjectId]
+    members: [{type: Schema.Types.ObjectId, ref: 'User'}],
+    eventsRegistration: [{type: Schema.Types.ObjectId, ref: 'EventRegistration'}],
+    teamEventStatusId: [{ type: Schema.Types.ObjectId, ref: 'TeamEventStatus' }],
 }, {timestamps: true}) ;

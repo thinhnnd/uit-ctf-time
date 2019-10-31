@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Req, Res, Query, Param, NotFoundException, InternalServerErrorException } from "@nestjs/common";
+import { Controller, Get, Post, Body, Req, Res, Query, Param, NotFoundException, InternalServerErrorException, Put, Delete } from "@nestjs/common";
 import { Request, Response } from 'express';
 import { CTFEventsService } from "./events.service";
 import { CreateCTFEventDto } from "./dtos/create-ctf-event.dto";
@@ -42,6 +42,34 @@ export class CTFEventsController {
         } catch (error) {
             console.log("CTFEventsController/Post/api/v1/events command failed", error);
             throw new InternalServerErrorException();
+        }
+    }
+    @Put('/events/:id')
+    async updateEvents(@Req() req: Request, @Res() res: Response, @Body() body) {
+        const id = req.params.id;
+        try {
+            const updatedEvent = await this.CTFEventsService.updateCTFEvent(id, body);
+            if (updatedEvent) return res.json(updatedEvent);
+            else throw new NotFoundException();
+        } catch (error) {
+            console.log(error);
+            if (error.status !== 404)
+                throw new InternalServerErrorException(`CTFEventsController/Put/api/v1/events/${id} query failed`);
+            throw error;
+        }
+    }
+    @Delete('/events/:id')
+    async deleteEvents(@Req() req: Request, @Res() res: Response) {
+        const id = req.params.id;
+        try {
+            const deletedEvent = await this.CTFEventsService.deleteCTFEvent(id);
+            if (deletedEvent) return res.json(deletedEvent);
+            else throw new NotFoundException();
+        } catch (error) {
+            console.log(error);
+            if (error.status !== 404)
+                throw new InternalServerErrorException(`CTFEventsController/Delete/api/v1/events/${id} query failed`);
+            throw error;
         }
     }
 }

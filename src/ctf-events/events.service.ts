@@ -16,7 +16,7 @@ export class CTFEventsService implements OnModuleInit {
         }
     }
     constructor(@InjectModel('CTF_Event') private CTFEventModel: Model<CTFEvent>) { }
-    async migrateDatabase(limit: number = 100) {
+    private async migrateDatabase(limit: number = 100) {
         try {
             //check database
             Logger.log('Migrating database...', 'Database');
@@ -54,10 +54,10 @@ export class CTFEventsService implements OnModuleInit {
     async createCTFEvent(newEvent: CreateCTFEventDto): Promise<CTFEvent> {
         return await this.CTFEventModel.create(newEvent);
     }
-    async deleteCTFEvent(id: number): Promise<CTFEvent> {
-        return
+    async deleteCTFEvent(id: string): Promise<CTFEvent> {
+        return await this.CTFEventModel.findByIdAndDelete(id);
     }
-    async updateCTFEvent(id: number, updateCTFEvent: CTFEvent): Promise<CTFEvent> {
-        return
+    async updateCTFEvent(id: string, updateCTFEvent: CTFEvent): Promise<CTFEvent> {
+        return await this.CTFEventModel.findByIdAndUpdate(id, updateCTFEvent);
     }
 }

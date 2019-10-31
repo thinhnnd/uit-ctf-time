@@ -1,39 +1,40 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, UnprocessableEntityException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { TeamSchema } from './schemas/team.schema';
 import { Iteam } from './interfaces/team.interface';
 import { TeamInfoDTO } from './dto/team.dto';
 import { IUser } from '../users/interfaces/user.interface';
-
+import { Validator } from 'class-validator';
+import { IEventRegistration } from '../shared/interfaces/event-reg.interface';
+import { UsersService } from '../users/users.service';
+const validator = new Validator();
 @Injectable()
 export class TeamsService {
     constructor(
-            @InjectModel('Team') private readonly teamModel: Model<Iteam>,
-            @InjectModel('User') private readonly userModel: Model<IUser>,
-        ) { }
+        @InjectModel('Team') private readonly teamModel: Model<Iteam>,
+        @InjectModel('EventRegistration') private readonly eventRegModel: Model<IEventRegistration>,
+        private readonly userService: UsersService
+    ) { }
 
     async createTeam(userId: string, teamDto: TeamInfoDTO) {
         const { teamName } = teamDto;
-        let user = await this.userModel.findById(userId);  
-        if(!user) {
-            throw new HttpException('User not found.', HttpStatus.BAD_REQUEST);
+        let user = await this.userService.getUserById(userId);
+        if (!user) {
+            throw new NotFoundException('User not found.');
         }
-        const team = await this.teamModel.findOne({teamName: teamName})
-        if(team) {
-            throw new HttpException('This name already taken.', HttpStatus.BAD_REQUEST);
+        const team = await this.teamModel.findOne({ teamName: teamName })
+        if (team) {
+            throw new UnprocessableEntityException('This name already taken.');
         }
         // create team model with dto and addition info
-        const createdTeam = new this.teamModel({ 
-            ...teamDto, 
-            leader: userId, 
-            members: [userId] 
+        const createdTeam = new this.teamModel({
+            ...teamDto,
+            leader: userId,
+            members: [userId]
         });
-
         let result = await createdTeam.save();
-
         // using this to add teamId to user who create this team... purpose: make the 2 way refference
-        if(!user.teams) {
+        if (!user.teams) {
             await user.updateOne({ teams: [result._id] });
         }
         else {
@@ -41,15 +42,13 @@ export class TeamsService {
             teams.push(result._id)
             await user.updateOne({ teams: teams });
         }
-        
         return result;
     }
 
     async getTeam(id: string): Promise<Iteam> {
         const team = this.teamModel.findById(id);
-
-        if(!team) {
-            throw new HttpException('Team not found', HttpStatus.NOT_FOUND)
+        if (!team) {
+            throw new NotFoundException('Team not found');
         }
         return team;
     }
@@ -62,104 +61,53 @@ export class TeamsService {
     async destroyTeams(userId: number, ) {
 
     }
-
-    async addMember(userId: string, userNeedToAddId: string , teamId: string ) {
+    async addMember(memberIdOrEmail: string, teamId: string) {
         const team = await this.teamModel.findById(teamId);
-        if(!team) {
-            throw new HttpException('Team not found.', HttpStatus.BAD_REQUEST);
+        if (!team) {
+            throw new NotFoundException('Team not found.');
         }
-        const userToAdd = await this.userModel.findById(userNeedToAddId);
-        if (!userToAdd) {
-            throw new HttpException('User not found.', HttpStatus.BAD_REQUEST);
+        let newMember: IUser;
+        if (validator.isEmail(memberIdOrEmail)) {
+            newMember = await this.userService.findOneByEmail(memberIdOrEmail);
         }
-        console.log(userToAdd.teams);
-        if (userToAdd.teams.length > 0) {
-            throw new HttpException('User already in a team.', HttpStatus.BAD_REQUEST);
+        else newMember = await this.userService.getUserById(memberIdOrEmail);
+        if (!newMember) {
+            throw new NotFoundException('User add not found.');
         }
-
-        if( team.members.indexOf(userToAdd.id) > -1) {
-            throw new HttpException('User already in this team.', HttpStatus.BAD_REQUEST);
+        if (newMember.teams.includes(teamId) || team.members.indexOf(newMember.id) > -1) {
+            throw new UnprocessableEntityException('User already in a team.');
         }
-
-        team.members.push(userNeedToAddId);
+        team.members.push(newMember._id);
         const updatedTeam = new this.teamModel(team);
-        userToAdd.updateOne({ teams: userToAdd.teams.push(updatedTeam._id)});
-
         const result = await updatedTeam.save();
-
-        // using this to add teamId to user who create this team... purpose: make the 2 way refference
-        if(!userToAdd.teams) {
-            await userToAdd.updateOne({ teams: [result._id] });
-        }
-        else {
-            let teams = userToAdd.teams;
-            teams.push(result._id)
-            await userToAdd.updateOne({ teams: teams });
-        }
-        
-        return result;
-
-    }
-
-    async addMemberByEmail(userId: string, userNeedToAddEmail: string , teamId: string ) {
-        const team = await this.teamModel.findById(teamId);
-        if(!team) {
-            throw new HttpException('Team not found.', HttpStatus.BAD_REQUEST);
-        }
-        // if(team.leader !== userId) {
-        //     throw new HttpException('Only leader can add member', HttpStatus.UNAUTHORIZED);
-        // }
-        console.log()
-        const userToAdd = await this.userModel.findOne({email: userNeedToAddEmail});
-        if (!userToAdd) {
-            throw new HttpException('User not found.', HttpStatus.BAD_REQUEST);
-        }
-
-        // if (userToAdd.teams) {
-        //     throw new HttpException('User already in a team.', HttpStatus.BAD_REQUEST);
-        // }
-
-        if( team.members.indexOf(userToAdd.id) > -1) {
-            throw new HttpException('User already in this team.', HttpStatus.BAD_REQUEST);
-        }
-
-        team.members.push(userToAdd._id);
-        const updatedTeam = new this.teamModel(team);
-        userToAdd.updateOne({ teams: userToAdd.teams.push(updatedTeam._id)})
-
-        const result = await updatedTeam.save();
-
-        // using this to add teamId to user who create this team... purpose: make the 2 way refference
-        if(!userToAdd.teams) {
-            await userToAdd.updateOne({ teams: [result._id] });
-        }
-        else {
-            let teams = userToAdd.teams;
-            teams.push(result._id)
-            await userToAdd.updateOne({ teams: teams });
-        }
-        
+        await newMember.updateOne({ teams: [...newMember.teams, result._id] })
         return result;
     }
 
-
-    async removeMember(userId: string, userToRemoveId: string , teamId: string ) {
+    async removeMember(userId: string, userToRemoveId: string, teamId: string) {
         const team = await this.teamModel.findById(teamId);
-        if(!team) {
-            throw new HttpException('Team not found.', HttpStatus.BAD_REQUEST);
+        if (!team) {
+            throw new NotFoundException('Team not found.');
         }
-
-        if(team.leader !== userId) {
-            throw new HttpException('Only leader can removed.', HttpStatus.BAD_REQUEST);
+        if (team.leader !== userId) {
+            throw new UnprocessableEntityException('Only leader can removed.');
         }
-        
         let members = team.members;
-        members.filter( member => member !== userToRemoveId);
+        members.filter(member => member !== userToRemoveId);
 
-        await team.updateOne({members: members});
+        await team.updateOne({ members: members });
 
-        return { success: true};
+        return { success: true };
     }
 
-
+    async registerCTFEvent(teamId: string, eventId: string): Promise<Iteam> {
+        const event = await this.eventRegModel.findById(eventId);
+        if (!event) throw new NotFoundException('Event not found');
+        const team = await this.teamModel.findByIdAndUpdate(teamId, {
+            $push: {
+                eventsRegistration: eventId
+            }
+        }, { new: true });
+        return team;
+    }
 }

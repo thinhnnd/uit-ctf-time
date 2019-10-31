@@ -1,16 +1,17 @@
-import { Controller, Get, Post, Put, Delete, Body, UseGuards, Param } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, UseGuards, Param, Req, Res, BadRequestException } from '@nestjs/common';
+import { Request, Response } from 'express';
 import { User } from '../users/user.decorator';
 import { TeamInfoDTO } from './dto/team.dto';
 import { TeamsService } from './teams.service';
 import { AuthGuard } from '@nestjs/passport';
-import { UsersService } from '../users/users.service';
+import { Iteam } from './interfaces/team.interface';
 
-@Controller('api/teams')
+@Controller('api/v1/teams')
 export class TeamsController {
 
     constructor(
-            private readonly teamsService: TeamsService,
-        ) {}
+        private readonly teamsService: TeamsService,
+    ) { }
 
     @Get()
     async getAllTeams() {
@@ -33,26 +34,30 @@ export class TeamsController {
 
     }
 
-    @Put(':id/add-member')
-    @UseGuards(AuthGuard('jwt'))
-    async addMember(@User('userId') userId, @Param('id') teamId: string ,@Body('userToAddId') userToAddId: string) {
-        return await this.teamsService.addMember(userId, userToAddId, teamId);
-    }
-
     @Put(':id/remove-member')
     @UseGuards(AuthGuard('jwt'))
-    async removeMember(@User('userId') userId, @Param('id') teamId: string ,@Body('userToRemoveId') userToRemoveId: string) {
-        return await this.teamsService.addMember(userId, userToRemoveId, teamId);
+    async removeMember(@User('userId') userId, @Param('id') teamId: string, @Body('userToRemoveId') userToRemoveId: string) {
+        return await this.teamsService.removeMember(userId, userToRemoveId, teamId);
     }
 
-    @Put(':id/add-member-by-email')
+
+    @Put(':id/add-member')
     @UseGuards(AuthGuard('jwt'))
-    async addMemberByEmail(@User('userId') userId, @Param('id') teamId: string ,@Body('userToAddEmail') userToAddEmail: string) {
-        return await this.teamsService.addMemberByEmail(userId, userToAddEmail, teamId);
+    async addMember(@Req() req: Request, @Body() body: any) {
+        const teamId = req.params.id;
+        if (!body) throw new BadRequestException("Body not provided");
+        try {
+            const { member } = body;
+            if (!member) throw new BadRequestException("Invalid body");
+            return await this.teamsService.addMember(member, teamId);
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
     }
-
     @Delete()
     async deleteTeam() {
-        
+
     }
+
 }

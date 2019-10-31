@@ -11,6 +11,7 @@ import { AuthModule } from './auth/auth.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TeamsModule } from './teams/teams.module';
+import { RegisterEventModule } from './register-event/register-event.module';
 
 @Module({
   imports: [
@@ -25,7 +26,7 @@ import { TeamsModule } from './teams/teams.module';
     CatsModule,
     UsersModule,
     AuthModule,
-    CTFEventsModule, TeamsModule,
+    CTFEventsModule, TeamsModule, RegisterEventModule,
   ],
   controllers: [AppController],
   providers: [

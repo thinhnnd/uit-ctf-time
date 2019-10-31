@@ -1,4 +1,4 @@
-import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
+import { Injectable, UnprocessableEntityException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { IUser } from './interfaces/user.interface';
@@ -18,7 +18,7 @@ export class UsersService {
     async createUser(userDto: UserDto) : Promise<IUser> {
         const user = await this.userModel.findOne({email: userDto.email});
         if(user) {
-            throw new HttpException('Email already exists!', HttpStatus.BAD_REQUEST);
+            throw new UnprocessableEntityException('Email already exists!');
         }
         const createdUser = new this.userModel(userDto);
         await createdUser.save();
@@ -33,7 +33,7 @@ export class UsersService {
     async getUserById(userId: String) : Promise<IUser> {
         const user = await this.userModel.findById(userId).populate('teams', '-updatedAt -members');
         if(!user) {
-            throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+            throw new NotFoundException('User not found');
         }
         return this.sanitizeUser(user); 
     }
@@ -45,7 +45,7 @@ export class UsersService {
     async findOneByEmail(userEmail: String) {
         const user = await this.userModel.findOne({email: userEmail}).populate('teams', '-updatedAt -members');
         if(!user) {
-            throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+            throw new NotFoundException('User not found');
         }
         return user;
     }
@@ -54,10 +54,10 @@ export class UsersService {
         const { email, password } = userLogin;
         const user = await this.userModel.findOne({email: email});
         if(!user) {
-            throw new HttpException('Invalid email or password', HttpStatus.BAD_REQUEST);
+            throw new UnprocessableEntityException('Invalid email or password');
         }
         if(!await bcrypt.compare(password, user.password)) {
-            throw new HttpException('Invalid email or password', HttpStatus.BAD_REQUEST);
+            throw new UnprocessableEntityException('Invalid email or password');
         }
         return this.sanitizeUser(user);
     }

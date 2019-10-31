@@ -61,5 +61,8 @@ export class UsersService {
         }
         return this.sanitizeUser(user);
     }
-    
+
+    async findUserAndUpdate(filter: object, options: object) {
+        return await this.userModel.findOneAndUpdate(filter, options, {new: true});
+    }    
 }

@@ -9,7 +9,7 @@ import { AuthController } from './auth.controller';
 import { JwtStrategy } from './jwt.strategy';
 
 dotenv.config();
-console.log(process.env.SECRET_KEY);
+// console.log(process.env.SECRET_KEY);
 @Module({
   imports: [
     UsersModule,

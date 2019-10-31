@@ -74,13 +74,17 @@ export class TeamsService {
         if (!newMember) {
             throw new NotFoundException('User add not found.');
         }
-        if (newMember.teams.includes(teamId) || team.members.indexOf(newMember.id) > -1) {
+
+        // if (newMember.teams.includes(teamId) || team.members.indexOf(newMember._id) > -1) {
+        if (newMember.teams.length > 0 || team.members.indexOf(newMember._id) > -1) { //check if user already in a team or not
             throw new UnprocessableEntityException('User already in a team.');
         }
+        // console.log(typeof newMember);
         team.members.push(newMember._id);
         const updatedTeam = new this.teamModel(team);
         const result = await updatedTeam.save();
-        await newMember.updateOne({ teams: [...newMember.teams, result._id] })
+        await this.userService.findUserAndUpdate({_id: newMember._id}, { teams: [...newMember.teams, result._id] });
+        // await newMember.updateOne({ teams: [...newMember.teams, result._id] })
         return result;
     }
 

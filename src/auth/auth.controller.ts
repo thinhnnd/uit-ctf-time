@@ -16,7 +16,7 @@ export class AuthController {
     const user = await this.usersService.findByLoginInput(userLogin);
     const payload = { email: user.email, role: user.role, id: user._id}
     const token = await this.authService.signPayload(payload);
-    console.log(token);
+    // console.log(token);
     return { ...user, token};
   }
 

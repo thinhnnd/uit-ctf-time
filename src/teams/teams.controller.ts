@@ -4,7 +4,6 @@ import { User } from '../users/user.decorator';
 import { TeamInfoDTO } from './dto/team.dto';
 import { TeamsService } from './teams.service';
 import { AuthGuard } from '@nestjs/passport';
-import { UsersService } from '../users/users.service';
 import { Iteam } from './interfaces/team.interface';
 
 @Controller('api/v1/teams')
@@ -52,4 +51,5 @@ export class TeamsController {
     async deleteTeam() {
 
     }
+
 }

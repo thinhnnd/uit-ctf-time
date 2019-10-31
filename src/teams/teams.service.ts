@@ -1,17 +1,19 @@
-import { Injectable, HttpException, HttpStatus, UnprocessableEntityException, NotFoundException } from '@nestjs/common';
+import { Injectable, UnprocessableEntityException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { TeamSchema } from './schemas/team.schema';
 import { Iteam } from './interfaces/team.interface';
 import { TeamInfoDTO } from './dto/team.dto';
 import { IUser } from '../users/interfaces/user.interface';
 import { Validator } from 'class-validator';
+import { IEventRegistration } from '../shared/interfaces/event-reg.interface';
+import { UsersService } from '../users/users.service';
 const validator = new Validator();
 @Injectable()
 export class TeamsService {
     constructor(
         @InjectModel('Team') private readonly teamModel: Model<Iteam>,
-        @InjectModel('User') private readonly userModel: Model<IUser>,
+        @InjectModel('EventRegistration') private readonly eventRegModel: Model<IEventRegistration>,
+        private readonly userService: UsersService
     ) { }
 
     async createTeam(userId: string, teamDto: TeamInfoDTO) {
@@ -20,24 +22,19 @@ export class TeamsService {
         if (team) {
             throw new UnprocessableEntityException('This name already taken.')
         }
-
         const createdTeam = new this.teamModel({
             ...teamDto,
             leader: userId,
             members: [userId]
         });
-
         return createdTeam.save();
     }
 
     async getTeam(id: string): Promise<Iteam> {
-
         const team = this.teamModel.findById(id);
-
         if (!team) {
             throw new NotFoundException('Team not found');
         }
-
         return team;
     }
 
@@ -48,9 +45,9 @@ export class TeamsService {
         }
         let newMember: IUser;
         if (validator.isEmail(memberIdOrEmail)) {
-            newMember = await this.userModel.findOne({ email: memberIdOrEmail })
+            newMember = await this.userService.findOneByEmail(memberIdOrEmail);
         }
-        else newMember = await this.userModel.findById(memberIdOrEmail);
+        else newMember = await this.userService.getUserById(memberIdOrEmail);
         if (!newMember) {
             throw new NotFoundException('User add not found.');
         }
@@ -64,5 +61,15 @@ export class TeamsService {
     async getAllTeams() {
         const teams = await this.teamModel.find().populate('members', '-password'); // -password mean exclue password
         return teams;
+    }
+    async registerCTFEvent(teamId: string, eventId: string): Promise<Iteam> {
+        const event = await this.eventRegModel.findById(eventId);
+        if (!event) throw new NotFoundException('Event not found');
+        const team = await this.teamModel.findByIdAndUpdate(teamId, {
+            $push: {
+                eventsRegistration: eventId
+            }
+        }, { new: true });
+        return team;
     }
 }

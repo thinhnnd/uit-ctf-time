@@ -15,15 +15,17 @@ import { TeamsModule } from './teams/teams.module';
 @Module({
   imports: [
     MongooseModule.forRoot(
-      'mongodb://localhost/uit-ctf-time', 
+      'mongodb://localhost/uit-ctf-time',
       {
-         useNewUrlParser: true,
-         useUnifiedTopology: true
-      }), 
-      CatsModule, 
-      UsersModule, 
-      AuthModule, 
-      CTFEventsModule, TeamsModule,
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useFindAndModify: false,
+        useCreateIndex: true,
+      }),
+    CatsModule,
+    UsersModule,
+    AuthModule,
+    CTFEventsModule, TeamsModule,
   ],
   controllers: [AppController],
   providers: [

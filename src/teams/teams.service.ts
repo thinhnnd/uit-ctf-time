@@ -89,19 +89,40 @@ export class TeamsService {
     }
 
     async removeMember(userId: string, userToRemoveId: string, teamId: string) {
-        const team = await this.teamModel.findById(teamId);
+        let team = await this.teamModel.findById(teamId);
         if (!team) {
             throw new NotFoundException('Team not found.');
         }
-        if (team.leader !== userId) {
+
+        // console.log(typeof team.leader);
+        // console.log('userid',typeof userId);
+        // check suitable confition
+        if (team.leader.toString() !== userId) {
             throw new UnprocessableEntityException('Only leader can removed.');
         }
+        const userToRemove = await this.userService.getUserById(userToRemoveId);
+        if (!userToRemove) {
+            throw new NotFoundException('User to remove not found.');
+        }
+        // console.log(team.members.indexOf(userToRemove._id));
+        if (team.members.indexOf(userToRemove._id) < 0) { //check if user already in a team or not
+            throw new UnprocessableEntityException('User not in this team.');
+        }
+
+        // start to remove refference between teams and user
         let members = team.members;
-        members.filter(member => member !== userToRemoveId);
-
-        await team.updateOne({ members: members });
-
-        return { success: true };
+        members = members.filter(member => member.toString() !== userToRemoveId);
+        // await team.updateOne({ members: members });
+        team = await this.findOneAndUpdate({_id: team._id}, {members: members}, { new: true,
+            upsert: true});
+        
+        let userTeams = userToRemove.teams;
+        // console.log(userTeams);
+        userTeams = userTeams.filter( user_team => { console.log(user_team); user_team._id.toString() !== teamId});
+        // userToRemove.updateOne({ teams: userTeams})
+        await this.userService.findUserAndUpdate({_id: userToRemoveId}, { teams: userTeams})
+        // team = await this.teamModel.findById(teamId);
+        return team;
     }
 
     async registerCTFEvent(teamId: string, eventId: string): Promise<Iteam> {
@@ -113,5 +134,9 @@ export class TeamsService {
             }
         }, { new: true });
         return team;
+    }
+
+    async findOneAndUpdate(filter: object, update: object, option: object){
+        return await this.teamModel.findByIdAndUpdate(filter, update, option);
     }
 }

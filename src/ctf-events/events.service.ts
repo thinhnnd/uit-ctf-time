@@ -49,7 +49,7 @@ export class CTFEventsService implements OnModuleInit {
         return await this.CTFEventModel.find();
     }
     async getCTFEvent(id: string): Promise<CTFEvent> {
-        return await this.CTFEventModel.findOne({ id });
+        return await this.CTFEventModel.findOne({ _id: id });
     }
     async createCTFEvent(newEvent: CreateCTFEventDto): Promise<CTFEvent> {
         return await this.CTFEventModel.create(newEvent);

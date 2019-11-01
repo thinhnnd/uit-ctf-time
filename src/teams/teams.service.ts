@@ -5,14 +5,12 @@ import { Iteam } from './interfaces/team.interface';
 import { TeamInfoDTO } from './dto/team.dto';
 import { IUser } from '../users/interfaces/user.interface';
 import { Validator } from 'class-validator';
-import { IEventRegistration } from '../shared/interfaces/event-reg.interface';
 import { UsersService } from '../users/users.service';
 const validator = new Validator();
 @Injectable()
 export class TeamsService {
     constructor(
         @InjectModel('Team') private readonly teamModel: Model<Iteam>,
-        @InjectModel('EventRegistration') private readonly eventRegModel: Model<IEventRegistration>,
         private readonly userService: UsersService
     ) { }
 
@@ -34,14 +32,7 @@ export class TeamsService {
         });
         let result = await createdTeam.save();
         // using this to add teamId to user who create this team... purpose: make the 2 way refference
-        if (!user.teams) {
-            await user.updateOne({ teams: [result._id] });
-        }
-        else {
-            let teams = user.teams;
-            teams.push(result._id)
-            await user.updateOne({ teams: teams });
-        }
+        await this.userService.findUserAndUpdate({ _id: user._id }, { teams: [...user.teams, result._id] });
         return result;
     }
 
@@ -83,7 +74,7 @@ export class TeamsService {
         team.members.push(newMember._id);
         const updatedTeam = new this.teamModel(team);
         const result = await updatedTeam.save();
-        await this.userService.findUserAndUpdate({_id: newMember._id}, { teams: [...newMember.teams, result._id] });
+        await this.userService.findUserAndUpdate({ _id: newMember._id }, { teams: [...newMember.teams, result._id] });
         // await newMember.updateOne({ teams: [...newMember.teams, result._id] })
         return result;
     }
@@ -105,10 +96,10 @@ export class TeamsService {
     }
 
     async registerCTFEvent(teamId: string, eventId: string): Promise<Iteam> {
-        const event = await this.eventRegModel.findById(eventId);
-        if (!event) throw new NotFoundException('Event not found');
+        const event = await this.teamModel.findById(teamId).find({ eventsRegistration: eventId });
+        if (event.length > 0) throw new UnprocessableEntityException('Event already registered');
         const team = await this.teamModel.findByIdAndUpdate(teamId, {
-            $push: {
+            $addToSet: {
                 eventsRegistration: eventId
             }
         }, { new: true });

@@ -1,6 +1,5 @@
 import * as mongoose from 'mongoose';
 export const CTFEventSchema = new mongoose.Schema({
-    "id": { type: Number, unique: true },
     "organizers": Array,
     "onsite": Boolean,
     "finish": Date,

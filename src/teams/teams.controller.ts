@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Body, UseGuards, Param, Req, Res, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, UseGuards, Param, Req, Res, BadRequestException, Query } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { User } from '../users/user.decorator';
 import { TeamInfoDTO } from './dto/team.dto';
@@ -32,6 +32,13 @@ export class TeamsController {
     @Put()
     async updateTeam() {
 
+    }
+
+    @Put(':id/update-grade')
+    @UseGuards(AuthGuard('jwt'))
+    async updateGrade(@User('userId') userId: string, @Param('id') teamId: string, @Body() body: any){
+        const { eventId, grade } = body;
+        return await this.teamsService.updateGrade(teamId, eventId, grade);
     }
 
     @Put(':id/remove-member')

@@ -46,7 +46,7 @@ export class TeamsService {
 
     async getAllTeams() {
         const teams = await this.teamModel.find().populate('members', '-teams -password'); // -password mean exclue password
-        return teams;
+        return teams;   
     }
 
     async destroyTeams(userId: number, ) {
@@ -121,10 +121,30 @@ export class TeamsService {
         if (event.length > 0) throw new UnprocessableEntityException('Event already registered');
         const team = await this.teamModel.findByIdAndUpdate(teamId, {
             $addToSet: {
-                eventsRegistration: eventId
+                eventsRegistration: { event: eventId, grade: 0 }
             }
         }, { new: true });
         return team;
+    }
+
+    async updateGrade(teamId: string, eventId: string, grade: number) {
+        const team = await this.teamModel.findOne({ _id: teamId }).exec();
+        if(!team) {
+            throw new NotFoundException('Team not found.');
+        }
+
+        let eventsRegistration = team.eventsRegistration;
+        eventsRegistration.map( event => {
+            if(event._id === event.id) {
+                event.grade = grade;
+                return event;
+            }
+        });
+
+        team.eventsRegistration = eventsRegistration;;
+
+        const result = team.save();
+        return result;
     }
 
     async findOneAndUpdate(filter: object, update: object, option: object){

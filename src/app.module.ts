@@ -20,7 +20,7 @@ const prodURI = `mongodb+srv://${process.env.DATABASE_USER}:${process.env.DATABA
 @Module({
 	imports: [
 		MongooseModule.forRoot(
-			process.env.NODE_ENV !== 'production' ? devURI : prodURI,
+			prodURI,
 			{
 				useNewUrlParser: true,
 				useUnifiedTopology: true,

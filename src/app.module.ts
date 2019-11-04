@@ -16,7 +16,7 @@ import { RegisterEventModule } from './register-event/register-event.module';
 @Module({
   imports: [
     MongooseModule.forRoot(
-      'mongodb://localhost/uit-ctf-time',
+      process.env.NODE_ENV === 'production' ? `mongodb+srv://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@cluster0-vkc9k.gcp.mongodb.net/uit-ctf-time?retryWrites=true&w=majority` : 'mongodb://localhost/uit-ctf-time',
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,

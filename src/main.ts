@@ -1,9 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import * as dotenv from 'dotenv';
+
 import { Logger, ValidationPipe } from '@nestjs/common';
 
-dotenv.config();
 const port = process.env.PORT || 5050;
 async function bootstrap() {
   console.log(process.env.NODE_ENV);

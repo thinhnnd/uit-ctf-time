@@ -12,33 +12,34 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TeamsModule } from './teams/teams.module';
 import { RegisterEventModule } from './register-event/register-event.module';
-
+const devURI = 'mongodb://localhost/uit-ctf-time';
+const prodURI = `mongodb+srv://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@cluster0-wd6gd.gcp.mongodb.net/test?retryWrites=true&w=majority`;
 @Module({
-  imports: [
-    MongooseModule.forRoot(
-      'mongodb://localhost/uit-ctf-time',
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useFindAndModify: false,
-        useCreateIndex: true,
-      }),
-    CatsModule,
-    UsersModule,
-    AuthModule,
-    CTFEventsModule, TeamsModule, RegisterEventModule,
-  ],
-  controllers: [AppController],
-  providers: [
-    AppService,
-    {
-      provide: APP_FILTER,
-      useClass: HttpErrorFilter
-    },
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: LoggingInterceptor
-    },
-  ],
+	imports: [
+		MongooseModule.forRoot(
+			process.env.NODE_ENV !== 'production' ? devURI : prodURI,
+			{
+				useNewUrlParser: true,
+				useUnifiedTopology: true,
+				useFindAndModify: false,
+				useCreateIndex: true,
+			}),
+		CatsModule,
+		UsersModule,
+		AuthModule,
+		CTFEventsModule, TeamsModule, RegisterEventModule,
+	],
+	controllers: [AppController],
+	providers: [
+		AppService,
+		{
+			provide: APP_FILTER,
+			useClass: HttpErrorFilter
+		},
+		{
+			provide: APP_INTERCEPTOR,
+			useClass: LoggingInterceptor
+		},
+	],
 })
 export class AppModule { }

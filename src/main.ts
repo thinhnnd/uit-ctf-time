@@ -6,6 +6,8 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 dotenv.config();
 const port = process.env.PORT || 5050;
 async function bootstrap() {
+  console.log(process.env.NODE_ENV);
+  
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe({ disableErrorMessages: true }));
   await app.listen(port);

@@ -5,8 +5,8 @@ import { AuthService } from './auth/auth.service';
 @Controller()
 export class AppController {
   constructor(private readonly authService: AuthService) {}
-  @Get('hello')
+  @Get()
   getProfile(@Request() req) {
-    return 'Hello world';
+    return 'WELCOME TO UIT CTF TIME';
   }
 }

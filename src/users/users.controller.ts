@@ -5,7 +5,7 @@ import { ValidationPipe } from '../shared/validation.pipe';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from './user.decorator';
 
-@Controller('api/users')
+@Controller('api/v1/users')
 export class UsersController {
 
     constructor(private readonly userService: UsersService) {}

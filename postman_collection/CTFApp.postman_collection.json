@@ -1,0 +1,751 @@
+{
+	"info": {
+		"_postman_id": "06cf8d0c-0975-4e2f-9fba-0c4a2b440e7d",
+		"name": "CTFApp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CTF Events",
+			"item": [
+				{
+					"name": "Get past & upcoming event",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}:5000/api/v1/events/?limit=10",
+							"host": [
+								"{{url}}"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"events",
+								""
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Event detail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://ctftime.org/api/v1/events/904/",
+							"protocol": "https",
+							"host": [
+								"ctftime",
+								"org"
+							],
+							"path": [
+								"api",
+								"v1",
+								"events",
+								"904",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete ctf event",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}:5000/api/v1/events/5dba40cc521fee04f0f34851",
+							"host": [
+								"{{url}}"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"events",
+								"5dba40cc521fee04f0f34851"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update event",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "onsite",
+									"value": "true",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "id",
+									"value": "111",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}:5000/api/v1/events/5dba40cc521fee04f0f34854",
+							"host": [
+								"{{url}}"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"events",
+								"5dba40cc521fee04f0f34854"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new CTF event",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n \"organizers\": [{\r\n \t\"id\":\"891\",\r\n \t\"name\":\"TPU org\"\r\n }],\r\n    \"start\": \"2019-10-30T00:00:00.000Z\",\r\n    \"description\": \"This is CTF Event Test 2\",\r\n    \"weight\": 5,\r\n    \"title\": \"CTF Event Test 2\",\r\n    \"duration\": {\r\n        \"hours\": 0,\r\n        \"days\": 1\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}:5000/api/v1/events",
+							"host": [
+								"{{url}}"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"events"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Authen",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "thupx@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "abc123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}:5000/auth/login",
+							"host": [
+								"{{url}}"
+							],
+							"port": "5000",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Login success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "email",
+											"value": "xuanthu404@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "abc123",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}:5000/auth/login",
+									"host": [
+										"{{url}}"
+									],
+									"port": "5000",
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "396"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"18c-MT8101Fx9FEh1jux2jpzRX4ijmY\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 31 Oct 2019 07:32:34 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"role\": \"user\",\n    \"_id\": \"5dba8df537cfaf3b68f26ab2\",\n    \"email\": \"xuanthu404@gmail.com\",\n    \"full_name\": \"Administartor\",\n    \"createdAt\": \"2019-10-31T07:32:05.488Z\",\n    \"__v\": 0,\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inh1YW50aHU0MDRAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpZCI6IjVkYmE4ZGY1MzdjZmFmM2I2OGYyNmFiMiIsImlhdCI6MTU3MjUwNzE1NCwiZXhwIjoxNTcyNTUwMzU0fQ.sgikGmfmukx48lPNp2feSOyD0yZE4ns87PgzVsIJidU\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "xuanthu404@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "abc123",
+									"type": "text"
+								},
+								{
+									"key": "full_name",
+									"value": "Administartor",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}:5000/auth/register",
+							"host": [
+								"{{url}}"
+							],
+							"port": "5000",
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Register success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "email",
+											"value": "xuanthu404@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "abc123",
+											"type": "text"
+										},
+										{
+											"key": "full_name",
+											"value": "Administartor",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}:5000/auth/register",
+									"host": [
+										"{{url}}"
+									],
+									"port": "5000",
+									"path": [
+										"auth",
+										"register"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "154"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"9a-Igq6e012mmfJfKPZ5WXr6GgdeCs\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 31 Oct 2019 07:32:05 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"role\": \"user\",\n    \"_id\": \"5dba8df537cfaf3b68f26ab2\",\n    \"email\": \"xuanthu404@gmail.com\",\n    \"full_name\": \"Administartor\",\n    \"createdAt\": \"2019-10-31T07:32:05.488Z\",\n    \"__v\": 0\n}"
+						}
+					]
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Teams",
+			"item": [
+				{
+					"name": "Create new team",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRodXB4QGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWQiOiI1ZGJkODM2MWE2NjU1ZDUxZTQwY2U2YjgiLCJpYXQiOjE1NzI3MDE4ODMsImV4cCI6MTU3Mjc0NTA4M30.98S22nawFU4czZJJgWUKb5wF58ZDyZ-GiM8FAPQSZJ4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "teamName",
+									"value": "H@ckError",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}:5000/api/v1/teams",
+							"host": [
+								"{{url}}"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"teams"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all teams",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}:5000/api/v1/teams",
+							"host": [
+								"{{url}}"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"teams"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get team detail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}:5000/api/v1/teams/5dba8ecb9f678247d0be585c",
+							"host": [
+								"{{url}}"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"teams",
+								"5dba8ecb9f678247d0be585c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add member to team by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRodXB4QGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWQiOiI1ZGJkODM2MWE2NjU1ZDUxZTQwY2U2YjgiLCJpYXQiOjE1NzI3MDE4ODMsImV4cCI6MTU3Mjc0NTA4M30.98S22nawFU4czZJJgWUKb5wF58ZDyZ-GiM8FAPQSZJ4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "member",
+									"value": "xuanthu404@gmail.com",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}:5000/api/v1/teams/5dbd86dea9419c060438b676/add-member",
+							"host": [
+								"{{url}}"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"teams",
+								"5dbd86dea9419c060438b676",
+								"add-member"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Register CTF Event",
+			"item": [
+				{
+					"name": "Team Register event (only leader)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRodXB4QGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWQiOiI1ZGJkODM2MWE2NjU1ZDUxZTQwY2U2YjgiLCJpYXQiOjE1NzI3MDE4ODMsImV4cCI6MTU3Mjc0NTA4M30.98S22nawFU4czZJJgWUKb5wF58ZDyZ-GiM8FAPQSZJ4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "eventId",
+									"value": "5dbd8346a6655d51e40ce699",
+									"type": "text"
+								},
+								{
+									"key": "teamId",
+									"value": "5dbd86dea9419c060438b676",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}:5000/api/v1/register-event",
+							"host": [
+								"{{url}}"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"register-event"
+							],
+							"query": [
+								{
+									"key": "eventId",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Team cancel Registration event",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWQiOiI1ZGJkODM2NWE2NjU1ZDUxZTQwY2U2YjkiLCJpYXQiOjE1NzI3MDEwNDksImV4cCI6MTU3Mjc0NDI0OX0.A2-LOpaenUVFWkgOxievSDF7Gt8rpy9RY9fP4Qh9EMA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "eventId",
+									"value": "5dbd8346a6655d51e40ce699",
+									"type": "text"
+								},
+								{
+									"key": "teamId",
+									"value": "5dbd86dea9419c060438b676",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}:5000/api/v1/register-event",
+							"host": [
+								"{{url}}"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"register-event"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all registration",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRodXB4QGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWQiOiI1ZGJkODM2MWE2NjU1ZDUxZTQwY2U2YjgiLCJpYXQiOjE1NzI3MDE4ODMsImV4cCI6MTU3Mjc0NTA4M30.98S22nawFU4czZJJgWUKb5wF58ZDyZ-GiM8FAPQSZJ4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}:5000/api/v1/register-event",
+							"host": [
+								"{{url}}"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"register-event"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Get all users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}:5000/api/users",
+							"host": [
+								"{{url}}"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get user by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}:5000/api/users/5dbd835ba6655d51e40ce6b7",
+							"host": [
+								"{{url}}"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users",
+								"5dbd835ba6655d51e40ce6b7"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

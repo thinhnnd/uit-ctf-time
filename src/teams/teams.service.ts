@@ -16,6 +16,7 @@ export class TeamsService {
 
     async createTeam(userId: string, teamDto: TeamInfoDTO) {
         const { teamName } = teamDto;
+        let members = teamDto.members;
         let user = await this.userService.getUserById(userId);
         if (!user) {
             throw new NotFoundException('User not found.');
@@ -25,10 +26,12 @@ export class TeamsService {
             throw new UnprocessableEntityException('This name already taken.');
         }
         // create team model with dto and addition info
+        members.push(userId);
+
         const createdTeam = new this.teamModel({
             ...teamDto,
             leader: userId,
-            members: [userId]
+            members: members,
         });
         let result = await createdTeam.save();
         // using this to add teamId to user who create this team... purpose: make the 2 way refference

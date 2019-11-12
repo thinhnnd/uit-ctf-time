@@ -1,8 +1,12 @@
-import { IsString, IsNotEmpty, Length } from "class-validator";
+import { IsString, IsNotEmpty, Length, IsArray, Max, ArrayMaxSize } from "class-validator";
 
 export class TeamInfoDTO {
     @IsNotEmpty()
     @IsString()
     @Length(4, 255)
     readonly teamName: string;
+
+    @IsArray()
+    @ArrayMaxSize(4)
+    readonly members?: string[];
 }

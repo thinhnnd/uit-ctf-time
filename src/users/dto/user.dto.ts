@@ -12,7 +12,9 @@ export class UserDto {
     @IsNotEmpty()
     readonly password: string;
 
-    readonly date_of_birth: Date; 
+    role: string;
+
+    readonly date_of_birth: Date;
 }
 
 export class LoginDto {

@@ -23,16 +23,19 @@ export class UsersController {
     }
 
     @Get()
+    @UseGuards(AuthGuard('jwt'))
     @UsePipes(new ValidationPipe())
     async readAll(){
         return await this.userService.getAllUsers();
     }
 
+    @UseGuards(AuthGuard('jwt'))
     @Put(':id')
     update(@Query('id') userId: string) {
         return `Update id: ${userId}`;
     }
 
+    @UseGuards(AuthGuard('jwt'))
     @Delete(':id')
     async destroy(@Query('id') userId: string) {
         await this.userService.destroyUser(userId);

@@ -14,11 +14,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}:5000/api/v1/events/?limit=10",
+							"raw": "{{url}}:{{port}}/api/v1/events/?limit=10",
 							"host": [
 								"{{url}}"
 							],
-							"port": "5000",
+							"port": "{{port}}",
 							"path": [
 								"api",
 								"v1",
@@ -41,25 +41,23 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://ctftime.org/api/v1/events/904/",
-							"protocol": "https",
+							"raw": "{{url}}:{{port}}/api/v1/events/5dc0210cc861ea00179e6029",
 							"host": [
-								"ctftime",
-								"org"
+								"{{url}}"
 							],
+							"port": "{{port}}",
 							"path": [
 								"api",
 								"v1",
 								"events",
-								"904",
-								""
+								"5dc0210cc861ea00179e6029"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "delete ctf event",
+					"name": "Delete ctf event",
 					"request": {
 						"method": "DELETE",
 						"header": [
@@ -71,11 +69,11 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}:5000/api/v1/events/5dba40cc521fee04f0f34851",
+							"raw": "{{url}}:{{port}}/api/v1/events/5dba40cc521fee04f0f34851",
 							"host": [
 								"{{url}}"
 							],
-							"port": "5000",
+							"port": "{{port}}",
 							"path": [
 								"api",
 								"v1",
@@ -115,11 +113,11 @@
 							]
 						},
 						"url": {
-							"raw": "{{url}}:5000/api/v1/events/5dba40cc521fee04f0f34854",
+							"raw": "{{url}}:{{port}}/api/v1/events/5dba40cc521fee04f0f34854",
 							"host": [
 								"{{url}}"
 							],
-							"port": "5000",
+							"port": "{{port}}",
 							"path": [
 								"api",
 								"v1",
@@ -152,11 +150,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}:5000/api/v1/events",
+							"raw": "{{url}}:{{port}}/api/v1/events",
 							"host": [
 								"{{url}}"
 							],
-							"port": "5000",
+							"port": "{{port}}",
 							"path": [
 								"api",
 								"v1",
@@ -200,12 +198,14 @@
 							]
 						},
 						"url": {
-							"raw": "{{url}}:5000/auth/login",
+							"raw": "{{url}}:{{port}}/api/v1/auth/login",
 							"host": [
 								"{{url}}"
 							],
-							"port": "5000",
+							"port": "{{port}}",
 							"path": [
+								"api",
+								"v1",
 								"auth",
 								"login"
 							]
@@ -302,7 +302,7 @@
 							"urlencoded": [
 								{
 									"key": "email",
-									"value": "xuanthu404@gmail.com",
+									"value": "thupx@gmail.com",
 									"type": "text"
 								},
 								{
@@ -312,18 +312,20 @@
 								},
 								{
 									"key": "full_name",
-									"value": "Administartor",
+									"value": "Pham Xuan Thu",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{url}}:5000/auth/register",
+							"raw": "{{url}}:{{port}}/api/v1/auth/register",
 							"host": [
 								"{{url}}"
 							],
-							"port": "5000",
+							"port": "{{port}}",
 							"path": [
+								"api",
+								"v1",
 								"auth",
 								"register"
 							]
@@ -447,11 +449,11 @@
 							]
 						},
 						"url": {
-							"raw": "{{url}}:5000/api/v1/teams",
+							"raw": "{{url}}:{{port}}/api/v1/teams",
 							"host": [
 								"{{url}}"
 							],
-							"port": "5000",
+							"port": "{{port}}",
 							"path": [
 								"api",
 								"v1",
@@ -467,11 +469,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}:5000/api/v1/teams",
+							"raw": "{{url}}:{{port}}/api/v1/teams",
 							"host": [
 								"{{url}}"
 							],
-							"port": "5000",
+							"port": "{{port}}",
 							"path": [
 								"api",
 								"v1",
@@ -487,11 +489,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}:5000/api/v1/teams/5dba8ecb9f678247d0be585c",
+							"raw": "{{url}}:{{port}}/api/v1/teams/5dba8ecb9f678247d0be585c",
 							"host": [
 								"{{url}}"
 							],
-							"port": "5000",
+							"port": "{{port}}",
 							"path": [
 								"api",
 								"v1",
@@ -535,17 +537,111 @@
 							]
 						},
 						"url": {
-							"raw": "{{url}}:5000/api/v1/teams/5dbd86dea9419c060438b676/add-member",
+							"raw": "{{url}}:{{port}}/api/v1/teams/5dbd86dea9419c060438b676/add-member",
 							"host": [
 								"{{url}}"
 							],
-							"port": "5000",
+							"port": "{{port}}",
 							"path": [
 								"api",
 								"v1",
 								"teams",
 								"5dbd86dea9419c060438b676",
 								"add-member"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Scrore for Team (Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNTczNDc5MDI1LCJleHAiOjE1NzM1MTUwMjV9.X6MNES-oIHK016u-QBbsjkmu1tMysFrAi-Dw8kbVLf4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grade",
+									"value": "10",
+									"type": "text"
+								},
+								{
+									"key": "eventId",
+									"value": "xxx",
+									"description": "optional",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}:{{port}}/api/v1/teams/5dc22f1ee50b550017243c74/update-grade",
+							"host": [
+								"{{url}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"teams",
+								"5dc22f1ee50b550017243c74",
+								"update-grade"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Member",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "userToRemoveId",
+									"value": "5dcaca9c9090d70017752357",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}:{{port}}/api/v1/teams/5dc22f1ee50b550017243c74/remove-member",
+							"host": [
+								"{{url}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"teams",
+								"5dc22f1ee50b550017243c74",
+								"remove-member"
 							]
 						}
 					},
@@ -595,11 +691,11 @@
 							]
 						},
 						"url": {
-							"raw": "{{url}}:5000/api/v1/register-event",
+							"raw": "{{url}}:{{port}}/api/v1/register-event",
 							"host": [
 								"{{url}}"
 							],
-							"port": "5000",
+							"port": "{{port}}",
 							"path": [
 								"api",
 								"v1",
@@ -654,11 +750,11 @@
 							]
 						},
 						"url": {
-							"raw": "{{url}}:5000/api/v1/register-event",
+							"raw": "{{url}}:{{port}}/api/v1/register-event",
 							"host": [
 								"{{url}}"
 							],
-							"port": "5000",
+							"port": "{{port}}",
 							"path": [
 								"api",
 								"v1",
@@ -676,7 +772,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRodXB4QGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWQiOiI1ZGJkODM2MWE2NjU1ZDUxZTQwY2U2YjgiLCJpYXQiOjE1NzI3MDE4ODMsImV4cCI6MTU3Mjc0NTA4M30.98S22nawFU4czZJJgWUKb5wF58ZDyZ-GiM8FAPQSZJ4",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRodXB4QGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWQiOiI1ZGM1MDU2ZDUwNjgzZDAwMTcwMThhZjgiLCJpYXQiOjE1NzM2MDk1NzAsImV4cCI6MTU3MzY1Mjc3MH0.bzQo2ZEzgWqcpwVEfJpmlrl-nPIxl8p4_1hvcpKwzlQ",
 									"type": "string"
 								}
 							]
@@ -684,15 +780,46 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}:5000/api/v1/register-event",
+							"raw": "{{url}}:{{port}}/api/v1/register-event",
 							"host": [
 								"{{url}}"
 							],
-							"port": "5000",
+							"port": "{{port}}",
 							"path": [
 								"api",
 								"v1",
 								"register-event"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get registration by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRodXB4QGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWQiOiI1ZGM1MDU2ZDUwNjgzZDAwMTcwMThhZjgiLCJpYXQiOjE1NzM2MDk1NzAsImV4cCI6MTU3MzY1Mjc3MH0.bzQo2ZEzgWqcpwVEfJpmlrl-nPIxl8p4_1hvcpKwzlQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}:{{port}}/api/v1/register-event/5dc90b4db514ce001702616b",
+							"host": [
+								"{{url}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"register-event",
+								"5dc90b4db514ce001702616b"
 							]
 						}
 					},
@@ -710,13 +837,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}:5000/api/users",
+							"raw": "{{url}}:{{port}}/api/v1/users",
 							"host": [
 								"{{url}}"
 							],
-							"port": "5000",
+							"port": "{{port}}",
 							"path": [
 								"api",
+								"v1",
 								"users"
 							]
 						}
@@ -724,20 +852,68 @@
 					"response": []
 				},
 				{
-					"name": "get user by id",
+					"name": "Get user by id",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}:5000/api/users/5dbd835ba6655d51e40ce6b7",
+							"raw": "{{url}}:{{port}}/api/v1/users/5dbd835ba6655d51e40ce6b7",
 							"host": [
 								"{{url}}"
 							],
-							"port": "5000",
+							"port": "{{port}}",
 							"path": [
 								"api",
+								"v1",
 								"users",
 								"5dbd835ba6655d51e40ce6b7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "email@domain.com",
+									"type": "text"
+								},
+								{
+									"key": "full_name",
+									"value": "Full Name Master",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "p@ssw0rd",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}:{{port}}/api/v1/users",
+							"host": [
+								"{{url}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"users"
 							]
 						}
 					},

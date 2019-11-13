@@ -60,8 +60,8 @@ export class TeamsController {
         } catch (error) {
             console.log(error);
             console.log(error);
-            if(error.name == 'MongoError' || error.name == 'ValidationError'){
-                throw new InternalServerErrorException('Database error');
+            if(error.name){
+                throw new InternalServerErrorException(error.message);
             }
             throw error;
         }

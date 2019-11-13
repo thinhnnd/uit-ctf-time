@@ -28,7 +28,7 @@ export class RegisterEventController {
     async getEventRegistered() {
         return await this.registrationService.findEvents({});
     }
-    @Get()
+    @Get('/:id')
     async getEvent(@Req() req: any) {
         const id = req.params.id;
         return await this.registrationService.findEventById(id);

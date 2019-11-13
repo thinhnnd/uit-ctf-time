@@ -56,7 +56,7 @@ export class TeamsService {
 
     }
     async addMember(memberIdOrEmail: string, teamId: string) {
-        const team = await this.teamModel.findById(teamId);
+        const team = await this.teamModel.findById(teamId).populate('members', '-teams -password');
         if (!team) {
             throw new NotFoundException('Team not found.');
         }

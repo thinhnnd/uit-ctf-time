@@ -23,6 +23,8 @@ export class RegisterEventService {
             const team = await this.teamService.getTeam(teamId);
             if (!team) throw new NotFoundException('Team not found');
             if (team.leader != leaderId) throw new UnauthorizedException('Only leader can be registered this event');
+            const isExisted = await this.eventRegModel.find({ $and: [{ teamId: teamId }, { eventId: eventId }] });
+            if (isExisted.length > 0) throw new UnprocessableEntityException('Your team already registered this event');
             const registration = await this.eventRegModel.create(data);
             if (registration) {
                 const teamUpdated = await this.teamService.registerCTFEvent(teamId, eventId);

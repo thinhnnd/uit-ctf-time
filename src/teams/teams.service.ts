@@ -49,7 +49,7 @@ export class TeamsService {
 
     async getAllTeams() {
         const teams = await this.teamModel.find().populate('members', '-teams -password'); // -password mean exclue password
-        return teams;   
+        return teams;
     }
 
     async destroyTeams(userId: number, ) {
@@ -107,20 +107,22 @@ export class TeamsService {
         let members = team.members;
         members = members.filter(member => member.toString() !== userToRemoveId);
         // await team.updateOne({ members: members });
-        team = await this.findOneAndUpdate({_id: team._id}, {members: members}, { new: true,
-            upsert: true});
-        
+        team = await this.findOneAndUpdate({ _id: team._id }, { members: members }, {
+            new: true,
+            upsert: true
+        });
+
         let userTeams = userToRemove.teams;
         // console.log(userTeams);
-        userTeams = userTeams.filter( user_team => { console.log(user_team); user_team._id.toString() !== teamId});
+        userTeams = userTeams.filter(user_team => { console.log(user_team); user_team._id.toString() !== teamId });
         // userToRemove.updateOne({ teams: userTeams})
-        await this.userService.findUserAndUpdate({_id: userToRemoveId}, { teams: userTeams})
+        await this.userService.findUserAndUpdate({ _id: userToRemoveId }, { teams: userTeams })
         // team = await this.teamModel.findById(teamId);
         return team;
     }
 
     async registerCTFEvent(teamId: string, eventId: string): Promise<Iteam> {
-        const event = await this.teamModel.findById(teamId).find({ eventsRegistration: eventId });
+        const event = await this.teamModel.findById(teamId).find({ eventsRegistration: { event: eventId } });
         if (event.length > 0) throw new UnprocessableEntityException('Event already registered');
         const team = await this.teamModel.findByIdAndUpdate(teamId, {
             $addToSet: {
@@ -132,13 +134,13 @@ export class TeamsService {
 
     async updateGrade(teamId: string, eventId: string, grade: number) {
         const team = await this.teamModel.findOne({ _id: teamId }).exec();
-        if(!team) {
+        if (!team) {
             throw new NotFoundException('Team not found.');
         }
 
         let eventsRegistration = team.eventsRegistration;
-        eventsRegistration.map( event => {
-            if(event._id === event.id) {
+        eventsRegistration.map(event => {
+            if (event._id === event.id) {
                 event.grade = grade;
                 return event;
             }
@@ -150,7 +152,7 @@ export class TeamsService {
         return result;
     }
 
-    async findOneAndUpdate(filter: object, update: object, option: object){
+    async findOneAndUpdate(filter: object, update: object, option: object) {
         return await this.teamModel.findByIdAndUpdate(filter, update, option);
     }
 }

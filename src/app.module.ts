@@ -13,6 +13,8 @@ import { AppService } from './app.service';
 import { TeamsModule } from './teams/teams.module';
 import { RegisterEventModule } from './register-event/register-event.module';
 
+const devURI = 'mongodb://localhost/uit-ctf-time';
+const prodURI = `mongodb+srv://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@cluster0-wd6gd.gcp.mongodb.net/test?retryWrites=true&w=majority`;
 @Module({
   imports: [
     MongooseModule.forRoot(

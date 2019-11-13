@@ -3,7 +3,7 @@ import { IsString, IsNotEmpty, Length, IsArray, Max, ArrayMaxSize } from "class-
 export class TeamInfoDTO {
     @IsNotEmpty()
     @IsString()
-    @Length(4, 255)
+    @Length(4, 50)
     readonly teamName: string;
 
     @IsArray()

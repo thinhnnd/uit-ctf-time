@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Body, UseGuards, Param, Req, Res, BadRequestException, Query } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, UseGuards, Param, Req, Res, BadRequestException, Query, InternalServerErrorException } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { User } from '../users/user.decorator';
 import { TeamInfoDTO } from './dto/team.dto';
@@ -59,6 +59,9 @@ export class TeamsController {
             return await this.teamsService.addMember(member, teamId);
         } catch (error) {
             console.log(error);
+            if(error.name == 'MongoError' || error.name == 'ValidationError'){
+                throw new InternalServerErrorException('Database error');
+            }
             throw error;
         }
     }

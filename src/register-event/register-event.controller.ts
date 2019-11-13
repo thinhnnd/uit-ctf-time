@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Post, Body, BadRequestException } from '@nestjs/common';
+import { Controller, UseGuards, Post, Body, BadRequestException, Get, Req, Delete } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { RegisterEventService } from './register-event.service';
 import { RegisterCTFEventDTO } from './dto/register-event.dto';
@@ -19,5 +19,18 @@ export class RegisterEventController {
             console.log(error);
             throw error;
         }
+    }
+    @Delete()
+    async cancelRegistration(@Body() reg: RegisterCTFEventDTO) {
+        return await this.registrationService.teamCancelEventRegistration(reg);
+    }
+    @Get()
+    async getEventRegistered() {
+        return await this.registrationService.findEvents({});
+    }
+    @Get()
+    async getEvent(@Req() req: any) {
+        const id = req.params.id;
+        return await this.registrationService.findEventById(id);
     }
 }

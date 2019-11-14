@@ -160,7 +160,7 @@ export class TeamsService {
         if (!event) throw new NotFoundException('Your team does not register this event.');
         return {
             teamId: team.id,
-            team: team.name,
+            team: team.teamName,
             score: event.grade,
         }
     }

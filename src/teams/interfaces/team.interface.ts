@@ -1,7 +1,7 @@
 import { Document } from 'mongoose';
 
 export interface Iteam extends Document {
-    readonly name: string;
+    readonly teamName: string;
     readonly leader: string;
     readonly members: string[];
     eventsRegistration: IEventRegistration[];

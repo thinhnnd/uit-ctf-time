@@ -57,6 +57,9 @@ export class TeamsService {
         if (!team) {
             throw new NotFoundException('Team not found.');
         }
+        if(team.members.length >= 5) {
+            throw new UnprocessableEntityException('This team is full. Maximum is 5 members');
+        }
         let newMember: IUser;
         if (validator.isEmail(memberIdOrEmail)) {
             newMember = await this.userService.findOneByEmail(memberIdOrEmail);

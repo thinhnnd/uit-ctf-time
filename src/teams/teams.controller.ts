@@ -66,6 +66,8 @@ export class TeamsController {
             throw error;
         }
     }
+
+    
     @Delete()
     async deleteTeam() {
 

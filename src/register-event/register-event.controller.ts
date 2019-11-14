@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Post, Body, BadRequestException, Get, Req, Delete } from '@nestjs/common';
+import { Controller, UseGuards, Post, Body, BadRequestException, Get, Req, Delete, Query } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { RegisterEventService } from './register-event.service';
 import { RegisterCTFEventDTO } from './dto/register-event.dto';
@@ -28,9 +28,12 @@ export class RegisterEventController {
     async getEventRegistered() {
         return await this.registrationService.findEvents({});
     }
-    @Get('/:id')
-    async getEvent(@Req() req: any) {
-        const id = req.params.id;
-        return await this.registrationService.findEventById(id);
+    @Get('/event')
+    async getEvent(@Query() q) {
+        return await this.registrationService.findEventById(q.id);
+    }
+    @Get('/rank')
+    async ranking(@Query() query) {
+        return await this.registrationService.ranking(query.event);
     }
 }

@@ -13,4 +13,5 @@ export interface Iteam extends Document {
 interface IEventRegistration extends Document {
     _id: string;
     grade: number;
+    event: string;
 }

@@ -6,6 +6,7 @@ import { IEventRegistration } from '../shared/interfaces/event-reg.interface';
 import { TeamsService } from '../teams/teams.service';
 import { CTFEventsService } from '../ctf-events/events.service';
 import { RegisterCTFEventDTO } from './dto/register-event.dto';
+import { Iteam } from '../teams/interfaces/team.interface';
 @Injectable()
 export class RegisterEventService {
     constructor(
@@ -49,7 +50,9 @@ export class RegisterEventService {
         else throw new NotFoundException('Not Found Event to update');
     }
     async findEventById(eventId: string): Promise<IEventRegistration> {
-        return await this.eventRegModel.findById(eventId);
+        const event = await this.eventRegModel.findById(eventId);
+        if (!event) throw new NotFoundException('Not found registration');
+        return event;
     }
     async findEvents(options: object): Promise<IEventRegistration[]> {
         return await this.eventRegModel.find(options);
@@ -64,5 +67,25 @@ export class RegisterEventService {
             return canceledEvent;
         }
         else { throw new InternalServerErrorException('Unable to update event of team') }
+    }
+    async ranking(eventId: string) {
+        try {
+            const events = await this.findEvents({ eventId });
+            const promises: Array<Promise<Iteam>> = [];
+            events.forEach(event => {
+                promises.push(this.teamService.getTeam(event.teamId));
+            });
+            const teams = await Promise.all(promises);
+            const scorePromises: Array<Promise<{ team: string, teamId: string, score: number }>> = [];
+            teams.forEach(team => {
+                scorePromises.push(this.teamService.getGradeOfEventForTeam(team.id, eventId));
+            });
+            const scores = await Promise.all(scorePromises);
+            scores.sort((a, b) => (a.score > b.score) ? 1 : (a.score === b.score) ? ((a.team > b.team) ? 1 : -1) : -1);
+            return scores;
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
     }
 }

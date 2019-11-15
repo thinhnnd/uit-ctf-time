@@ -30,6 +30,18 @@ export class UsersService {
         return users.map( user => this.sanitizeUser(user));
     }
 
+    async getUsersHaveNoTeam() : Promise<IUser[]> {
+        try {
+            const users = await this.userModel.find().exec();
+            let temp = users.filter( user => user.teams.length == 0)
+            return temp.map( user => this.sanitizeUser(user));
+        }
+        catch (err) {
+            throw new NotFoundException('Users not found');
+        }
+
+    }
+
     async getUserById(userId: String) : Promise<IUser> {
         const user = await this.userModel.findById(userId).populate('teams', '-updatedAt -members');
         if(!user) {

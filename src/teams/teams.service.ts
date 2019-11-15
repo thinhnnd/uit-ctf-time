@@ -60,6 +60,9 @@ export class TeamsService {
         if (!team) {
             throw new NotFoundException('Team not found.');
         }
+        if(team.members.length >= 5) {
+            throw new UnprocessableEntityException('This team is full. Maximum is 5 members');
+        }
         let newMember: IUser;
         if (validator.isEmail(memberIdOrEmail)) {
             newMember = await this.userService.findOneByEmail(memberIdOrEmail);
@@ -151,7 +154,19 @@ export class TeamsService {
         const result = team.save();
         return result;
     }
-
+    async getGradeOfEventForTeam(teamId: string, eventId: string) {
+        const team = await this.teamModel.findOne({ _id: teamId }).exec();
+        if (!team) {
+            throw new NotFoundException('Team not found.');
+        }
+        const event = team.eventsRegistration.find(evtReg => evtReg.event == eventId);
+        if (!event) throw new NotFoundException('Your team does not register this event.');
+        return {
+            teamId: team.id,
+            team: team.teamName,
+            score: event.grade,
+        }
+    }
     async findOneAndUpdate(filter: object, update: object, option: object) {
         return await this.teamModel.findByIdAndUpdate(filter, update, option);
     }

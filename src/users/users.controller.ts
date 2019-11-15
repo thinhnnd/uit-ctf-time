@@ -4,6 +4,7 @@ import { UserDto } from './dto/user.dto';
 import { ValidationPipe } from '../shared/validation.pipe';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from './user.decorator';
+import { QueryDto } from './dto/query.dto';
 
 @Controller('api/v1/users')
 export class UsersController {
@@ -22,11 +23,22 @@ export class UsersController {
         return await this.userService.getUserById(userId);
     }
 
-    @Get()
+    @Get('')
     @UseGuards(AuthGuard('jwt'))
     @UsePipes(new ValidationPipe())
-    async readAll(){
-        return await this.userService.getAllUsers();
+    async get(@Query('filter') filter: string){
+        try {
+            if (!filter) {
+                return await this.userService.getAllUsers();
+            }
+            else if(filter == "no-team") {
+                return await this.userService.getUsersHaveNoTeam();
+            }
+        }
+        catch(err) {
+            throw new Error(err.message);
+        }
+
     }
 
     @UseGuards(AuthGuard('jwt'))

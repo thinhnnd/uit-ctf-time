@@ -18,10 +18,18 @@ export class HttpErrorFilter implements ExceptionFilter {
             ? exception.getStatus()
             : HttpStatus.INTERNAL_SERVER_ERROR;
         console.log("request:", request.body);
-
+        let error = {};
+        if (typeof exception.message === "string") {
+            error = {
+                "statusCode": 500,
+                "error": "Internal Server Error",
+                "message": exception.message,
+            }
+        }
+        else error = exception.message;
         const errorResponse = {
             method: request.method,
-            ...exception.message,
+            ...error,
             timestamp: new Date().toLocaleDateString(),
             path: request.url,
         }

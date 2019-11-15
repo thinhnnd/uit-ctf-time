@@ -59,12 +59,15 @@ export class TeamsController {
             return await this.teamsService.addMember(member, teamId);
         } catch (error) {
             console.log(error);
-            if(error.name == 'MongoError' || error.name == 'ValidationError'){
-                throw new InternalServerErrorException('Database error');
+            console.log(error);
+            if(error.name){
+                throw new InternalServerErrorException(error.message);
             }
             throw error;
         }
     }
+
+    
     @Delete()
     async deleteTeam() {
 

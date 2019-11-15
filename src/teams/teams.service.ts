@@ -142,18 +142,18 @@ export class TeamsService {
         }
 
         let eventsRegistration = team.eventsRegistration;
-        eventsRegistration.map(event => {
-            if (event._id === eventId) {
-                event.grade = grade;
-                return event;
+        eventsRegistration.map(eventReg => {
+            if (eventReg.event === eventId) {
+                eventReg.grade = grade;
+                return eventReg;
             }
         });
 
         team.eventsRegistration = eventsRegistration;;
 
-        const result = team.save();
+        // const res = await team.updateOne({ eventsRegistration: eventsRegistration });
 
-
+        const result = await team.save();
         return result;
     }
     async getGradeOfEventForTeam(teamId: string, eventId: string) {

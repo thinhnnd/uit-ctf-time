@@ -88,4 +88,25 @@ export class RegisterEventService {
             throw error;
         }
     }
+
+    async getTeamOnAnEvent(eventId: string) {
+        try {
+            const events = await this.findEvents({ eventId });
+            const promises: Array<Promise<Iteam>> = [];
+            events.forEach(event => {
+                promises.push(this.teamService.getTeam(event.teamId));
+            });
+            const teams = await Promise.all(promises);
+            const scorePromises: Array<Promise<{ team: string, teamId: string, score: number }>> = [];
+            teams.forEach(team => {
+                scorePromises.push(this.teamService.getGradeOfEventForTeam(team.id, eventId));
+            });
+            const scores = await Promise.all(scorePromises);
+            return scores;
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+
+    }
 }

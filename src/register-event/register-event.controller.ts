@@ -40,4 +40,9 @@ export class RegisterEventController {
     async ranking(@Query() query) {
         return await this.registrationService.ranking(query.event);
     }
+
+    @Get('/teams')
+    async getTeam(@Query() query) {
+        return await this.registrationService.getTeamOnAnEvent(query.event);
+    }
 }

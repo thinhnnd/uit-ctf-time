@@ -143,7 +143,7 @@ export class TeamsService {
 
         let eventsRegistration = team.eventsRegistration;
         eventsRegistration.map(event => {
-            if (event._id === event.id) {
+            if (event._id === eventId) {
                 event.grade = grade;
                 return event;
             }
@@ -152,6 +152,8 @@ export class TeamsService {
         team.eventsRegistration = eventsRegistration;;
 
         const result = team.save();
+
+
         return result;
     }
     async getGradeOfEventForTeam(teamId: string, eventId: string) {

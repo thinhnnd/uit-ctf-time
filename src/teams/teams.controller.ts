@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Body, UseGuards, Param, Req, Res, BadRequestException, Query } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, UseGuards, Param, Req, Res, BadRequestException, Query, UnauthorizedException } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { User } from '../users/user.decorator';
 import { TeamInfoDTO } from './dto/team.dto';
@@ -36,7 +36,11 @@ export class TeamsController {
 
     @Put(':id/update-grade')
     @UseGuards(AuthGuard('jwt'))
-    async updateGrade(@User('userId') userId: string, @Param('id') teamId: string, @Body() body: any){
+    async updateGrade(@User() user, @Param('id') teamId: string, @Body() body: any){
+        const { role } = user;
+        if (role !== "admin") {
+            throw new UnauthorizedException('Only admin can update grade');
+        }
         const { eventId, grade } = body;
         return await this.teamsService.updateGrade(teamId, eventId, grade);
     }

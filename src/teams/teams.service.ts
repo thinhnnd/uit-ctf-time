@@ -136,6 +136,7 @@ export class TeamsService {
     }
 
     async updateGrade(teamId: string, eventId: string, grade: number) {
+        // const user = 
         const team = await this.teamModel.findOne({ _id: teamId }).exec();
         if (!team) {
             throw new NotFoundException('Team not found.');

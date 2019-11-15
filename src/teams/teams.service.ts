@@ -143,16 +143,15 @@ export class TeamsService {
 
         let eventsRegistration = team.eventsRegistration;
         eventsRegistration.map(eventReg => {
-            if (eventReg.event === eventId) {
+            if (eventReg.event == eventId) 
                 eventReg.grade = grade;
-                return eventReg;
-            }
+            return eventReg;
+
         });
 
         team.eventsRegistration = eventsRegistration;;
 
         // const res = await team.updateOne({ eventsRegistration: eventsRegistration });
-
         const result = await team.save();
         return result;
     }

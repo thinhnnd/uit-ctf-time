@@ -16,7 +16,7 @@ export class TeamsService {
 
     async createTeam(userId: string, teamDto: TeamInfoDTO) {
         const { teamName } = teamDto;
-        let members = teamDto.members;
+        let members = teamDto.members || [];
         let user = await this.userService.getUserById(userId);
         if (!user) {
             throw new NotFoundException('User not found.');
@@ -60,7 +60,7 @@ export class TeamsService {
         if (!team) {
             throw new NotFoundException('Team not found.');
         }
-        if(team.members.length >= 5) {
+        if (team.members.length >= 5) {
             throw new UnprocessableEntityException('This team is full. Maximum is 5 members');
         }
         let newMember: IUser;
@@ -144,7 +144,7 @@ export class TeamsService {
 
         let eventsRegistration = team.eventsRegistration;
         eventsRegistration.map(eventReg => {
-            if (eventReg.event == eventId) 
+            if (eventReg.event == eventId)
                 eventReg.grade = grade;
             return eventReg;
 

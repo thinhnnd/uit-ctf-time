@@ -40,7 +40,7 @@ export class TeamsService {
     }
 
     async getTeam(id: string): Promise<Iteam> {
-        const team = this.teamModel.findById(id);
+        const team = this.teamModel.findById(id).populate('members', '-teams -password');
         if (!team) {
             throw new NotFoundException('Team not found');
         }

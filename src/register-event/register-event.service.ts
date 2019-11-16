@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, UnauthorizedException, UnprocessableEntityException, forwardRef, Inject, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException, UnprocessableEntityException, forwardRef, Inject, InternalServerErrorException, Logger } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
@@ -76,6 +76,7 @@ export class RegisterEventService {
                 promises.push(this.teamService.getTeam(event.teamId));
             });
             const teams = await Promise.all(promises);
+            Logger.log(teams, ' ranking get teams ');
             const scorePromises: Array<Promise<{ team: string, teamId: string, score: number }>> = [];
             teams.forEach(team => {
                 scorePromises.push(this.teamService.getGradeOfEventForTeam(team.id, eventId));

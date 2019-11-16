@@ -1,4 +1,4 @@
-import { Injectable, UnprocessableEntityException, NotFoundException } from '@nestjs/common';
+import { Injectable, UnprocessableEntityException, NotFoundException, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Iteam } from './interfaces/team.interface';
@@ -158,10 +158,16 @@ export class TeamsService {
     }
     async getGradeOfEventForTeam(teamId: string, eventId: string) {
         const team = await this.teamModel.findOne({ _id: teamId }).exec();
+        Logger.log(teamId, ' team service teamId ');
+        Logger.log(eventId, ' team service get eventId ');
+        
+        Logger.log(team, ' team service get team ');
         if (!team) {
             throw new NotFoundException('Team not found.');
         }
         const event = team.eventsRegistration.find(evtReg => evtReg.event == eventId);
+        Logger.log(event, ' team service get event ');
+
         if (!event) throw new NotFoundException('Your team does not register this event.');
         return {
             teamId: team.id,
